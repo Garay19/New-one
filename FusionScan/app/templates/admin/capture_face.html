@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Capture Face Encodings{% endblock %}
+
+{% block content %}
+<h2>Capture Face Encodings for {{ user.username }}</h2>
+<p>Please center your face in the frame. Multiple encodings will be captured automatically.</p>
+
+<form method="POST" action="{{ url_for('admin.capture_face', user_id=user.id) }}">
+    <button type="submit">Start Capture</button>
+</form>
+
+{% if user.face_encodings %}
+<p>Face encodings already captured for this user.</p>
+{% else %}
+<div class="video-container">
+    <img src="{{ url_for('main.video_feed') }}" class="video-feed" alt="Video Feed">
+    <div id="capture-status"></div>
+</div>
+{% endif %}
+
+<script>
+    // JavaScript to update capture status (optional)
+    // You can use AJAX to periodically check the status of the capture process
+    // and update the #capture-status element.
+</script>
+{% endblock %}

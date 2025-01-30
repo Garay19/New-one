@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+    <h2>Student Attendance</h2>
+    <div class="video-container">
+        <img src="{{ url_for('main.video_feed') }}" class="video-feed" alt="Video Feed">
+        <div id="temperatureDisplay">Temperature: --°C</div>
+    </div>
+
+    <h3>Today's Attendance</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>LRN</th>
+                <th>Strand</th>
+                <th>Status</th>
+                <th>Temperature</th>
+                <th>Timestamp</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data in attendance_data %}
+                <tr>
+                    <td>{{ data.user.username }}</td>
+                    <td>{{ data.user.student_lrn if data.user.student_lrn else 'None' }}</td>
+                    <td>{{ data.user.strand }}</td>
+                    <td>
+                        {% if data.attendance %}
+                            {{ data.attendance.status }}
+                        {% else %}
+                            Absent
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if data.attendance %}
+                            {{ data.attendance.temperature }}°C
+                        {% else %}
+                            N/A
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if data.attendance %}
+                            {{ data.attendance.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}
+                        {% else %}
+                            N/A
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% if current_user.is_admin %}
+        <form action="{{ url_for('main.restart_attendance') }}" method="post">
+            <button type="submit">Restart Attendance</button>
+        </form>
+        <a href="{{ url_for('main.export_attendance') }}">Export Attendance</a>
+    {% endif %}
+{% endblock %}

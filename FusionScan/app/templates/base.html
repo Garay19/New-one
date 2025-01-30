@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %} - FusionScan</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>FusionScan</h1>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('main.index') }}">Home</a></li>
+                {% if current_user.is_authenticated %}
+                    {% if current_user.is_admin %}
+                        <li><a href="{{ url_for('admin.dashboard') }}">Admin Dashboard</a></li>
+                    {% endif %}
+                    <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('auth.login') }}">Login</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+    <main>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <ul class="flashes">
+                    {% for message in messages %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </main>
+  
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

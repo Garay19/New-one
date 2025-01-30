@@ -1,0 +1,136 @@
+body {
+    font-family: 'Open Sans', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+    color: #333;
+    line-height: 1.6;
+}
+
+header {
+    background: #333;
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2.5em;
+    font-weight: 600;
+}
+
+nav ul {
+    padding: 0;
+    list-style: none;
+    margin-top: 10px;
+}
+
+nav ul li {
+    display: inline;
+    margin: 0 20px;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;font-size: 1.2em;
+    padding: 8px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+nav ul li a:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+main {
+    padding: 20px;
+}
+
+.video-container {
+    position: relative;
+    width: 70%;
+    max-width: 800px;
+    margin: 20px auto;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.video-feed {
+    width: 100%;
+    background: #343a40;
+    border: 2px solid #ccc;
+}
+
+#temperatureDisplay {
+    margin-top: 10px;
+    font-size: 22px;
+    color: #333;
+    font-weight: bold;
+}
+
+.overlay-text {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    color: white;
+    font-size: 18px;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.bounding-box {
+    position: absolute;
+    border: 2px solid red;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: red;
+    font-weight: bold;
+    background-color: rgba(255, 0, 0, 0.3);
+}
+
+footer {
+    text-align: center;
+    padding: 10px;
+    background: #333;
+    color: #fff;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    text-align: left;
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #f0f0f0;
+}
+
+.flashes {
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    list-style: none;
+}
+
+.flashes li {
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+    padding: 10px;
+    margin-bottom: 5px;
+    border-radius: 4px;
+}
