@@ -16,7 +16,10 @@ login.login_message = 'Please log in to access this page.'
 db = SQLAlchemy()
 migrate = Migrate()
 
+face_recognition_service = None 
+
 def create_app(config_class=Config):
+    global face_recognition_service
     app = Flask(__name__)
     app.config.from_object(config_class)
 
@@ -34,9 +37,8 @@ def create_app(config_class=Config):
     app.register_blueprint(auth_bp)
     app.register_blueprint(admin_bp)
 
-    # Load known faces on app startup within app context
+    # Initialize FaceRecognitionService and load known faces within the application context
     with app.app_context():
-        # Create an instance of FaceRecognitionService and load known faces
         from app.services.face_recognition_service import FaceRecognitionService
         face_recognition_service = FaceRecognitionService()
         face_recognition_service.load_known_faces()

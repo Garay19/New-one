@@ -28,40 +28,36 @@ def index():
     return render_template('index.html', attendance_data=attendance_data)
 
 def generate_frames():
+    from app import face_recognition_service
     camera = cv2.VideoCapture(0)
-    
-    # Get the application context before the loop
-    app = current_app._get_current_object()
-    
+
     while True:
         success, frame = camera.read()
         if not success:
             print("Error reading from camera.")
             break
         else:
-            # Create an application context for this request
-            with app.app_context():
-                frame, name, lrn = current_app.face_recognition_service.facial_recognition_process(frame)
-                temperature = get_temperature_from_arduino(app)
-                print(f"Temperature from Arduino: {temperature}")
+            frame, name, lrn = face_recognition_service.facial_recognition_process(frame)
+            temperature = get_temperature_from_arduino()
+            print(f"Temperature from Arduino: {temperature}")
 
-                if temperature is not None:
-                    if name != "Unknown":
-                        user = User.query.filter_by(username=name).first()
-                        if user:
-                            status = "Present" if temperature < 37.5 else "Anomaly"
-                            data_service.record_attendance(user.id, status, temperature)
+            if temperature is not None:
+                if name != "Unknown":
+                    user = User.query.filter_by(username=name).first()
+                    if user:
+                        status = "Present" if temperature < 37.5 else "Anomaly"
+                        data_service.record_attendance(user.id, status, temperature)
 
-                            # Display temperature on the frame
-                            temp_text = f"Temp: {temperature:.1f}°C"
-                            cv2.putText(frame, temp_text, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 0, 255), 2)
+                        # Display temperature on the frame
+                        temp_text = f"Temp: {temperature:.1f}°C"
+                        cv2.putText(frame, temp_text, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 0, 255), 2)
 
-                # Display a message if no faces are detected or no known faces are loaded
-                if name == "Unknown":
-                    if not current_app.face_recognition_service.known_face_encodings:
-                        cv2.putText(frame, "No known faces loaded!", (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 0, 255), 2)
-                    else:
-                        cv2.putText(frame, "No face detected", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 0, 255), 2)
+            # Display a message if no faces are detected or no known faces are loaded
+            if name == "Unknown":
+                if not face_recognition_service.known_face_encodings:
+                    cv2.putText(frame, "No known faces loaded!", (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 0, 255), 2)
+                else:
+                    cv2.putText(frame, "No face detected", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 0, 255), 2)
 
             ret, buffer = cv2.imencode('.jpg', frame)
             if not ret:
